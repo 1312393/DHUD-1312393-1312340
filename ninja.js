@@ -1,5 +1,12 @@
+
+
+
+
 var point = 0;
 var gameover = 0;
+var highscore = 0;
+var test = 0;
+//var trackpoint = 0;
 function drawMan() {
   var w = 200;
   var h = 400;
@@ -11,13 +18,19 @@ function drawMan() {
       setAttribute("height", 400)
     }
     with(context) {
+
+   
+     context.clearRect(0, 0, 400, 800);
       strokeStyle = "#000000";
       lineWidth = "5";
         clearRect(0,0,800,800);
 
          context.font = '40pt Aria';
   context.fillStyle = 'red';
-  context.fillText(point, 500, 100);
+  context.fillText('score:'+point, 600, 100);
+   context.font = '40pt Aria';
+  context.fillStyle = 'red';
+  context.fillText('highscore:'+ highscore, 500, 150);
 
       arc(w / 2, h / 2, h / 20, 0, Math.PI * 2, true);
       moveTo(w / 2, h / 2 + (h / 20));
@@ -124,7 +137,7 @@ function drawMan() {
         if (dist >= speed) {
           velX = (tx / dist) * speed;
           velY = (ty / dist) * speed;
-          posXa += velX;
+          posXa = posXa+velX;
           posYa += velY;
         }
       }
@@ -132,12 +145,23 @@ function drawMan() {
       function bodyMove() {
         //alert(posYa);
         moveBall();
-        context.clearRect(w / 2 + h / 10, 300, long+500, 50);
+       
+        context.clearRect(w / 2 + h / 10-20, 300, long+500, 50);
         context.fillRect(posXa, posYa - 50, 50, 50);
+        if((posXa < w / 2 + h / 10+long )&&(posXa > w / 2 + h / 10+long-50) )
+        {
+                  context.clearRect(w / 2 + h / 10 -20, 300, long+500, 50);
+                  
+        }
+     
         //context.clearRect(140, 50, canvas.width,300);
         // setTimeout(function(){  context.clearRect(posXa, posYa-50, 700, 50);}, 4000);
+
         requestAnimationFrame(bodyMove);
+        //context.clearRect(w / 2 + h / 10, 300, long+500, 50);
+
       }
+
 
       function readyMove() {
         if (gameReady) {
@@ -186,6 +210,7 @@ function drawMan() {
       var k = fiX;
       if ((k <= k1) && (k >= k2)){
         point += 1;
+        test = 1;
         gameover = 0;
         gameReady = false;
         context.clearRect(w / 2 + h / 10, 300, long+500, 50);
@@ -200,7 +225,7 @@ function drawMan() {
       }
 
       if (gameover == 1){
-       var haha = "Game Over ! Điểm của bạn là  "+ point;
+       var haha = "Game Over !"+ point + " Đ";
       // context.clearRect(0,0,800,800);
        context.font = '40pt Aria';
   		context.fillStyle = 'red';
@@ -208,10 +233,16 @@ function drawMan() {
        // alert('diem den ' + k + 'goc trai' + k2 + 'goc phai' + k1);
       // alert("GAME OVER!!Tong diem  cua ban la " +point);
       // gameReady = False;
+      //window.cancelAnimationFrame(bodyMove);
        //setTimeout(function() {alert("Chơi lại không ?";},1000);
+      // context.clearRect(0, 0, 800, 400);
+
+       if(highscore < point)
+       {
+        highscore = point;
+       }
        point = 0;
-       gameReady = false;
-        context.clearRect(w / 2 + h / 10, 300, long+500, 50);
+        test = 1;
         setTimeout(function() {playAgain();},2000);
       }
 
@@ -235,7 +266,7 @@ function drawMan() {
       function collapse() {
         //alert('hihi');
         //context.clearRect(140, 0, canvas.width, canvas.height);
-        context.clearRect(w / 2 + h / 10, 300, long, 50);
+        //context.clearRect(w / 2 + h / 10, 300, long, 50);
 
 
         // long = 350-newY ;
@@ -266,6 +297,7 @@ function drawMan() {
         //  posX += velX;
         //  posY += velY;
         // }
+        requestAnimationFrame(collapse);
       }
 
       function drawCanvas() {
@@ -274,7 +306,7 @@ function drawMan() {
         // context.clearRect(140, 0, canvas.width, canvas.height);
         context.fillRect(posX, posY, 10, 10);
 
-        requestAnimationFrame(drawCanvas);
+       requestAnimationFrame(drawCanvas);
 
       }
 
